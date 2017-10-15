@@ -56,6 +56,7 @@ function Get-Package {
     }
     catch {
         Write-Log -Msg "обтьнд╪Чй╖╟э"
+        exit 0
     }
 }
 
