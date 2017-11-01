@@ -90,7 +90,7 @@ Write-Log -Msg ("本地版本[{0}], 最新版本[{1}] - 下载最新版本..." -f $local["vers
 Get-Package -Url ($BASE_URL + $PLATFORM + "/" + $EXEC) -Dest ($BASE + $EXEC + $SUFFIX)
 
 $temp = Get-LocalPackageInfo -Path ($BASE + $EXEC + $SUFFIX)
-if ($remote["shasum"] -eq $temp["shasum"]) {
+if ($remote["shasum"] -ne $temp["shasum"]) {
     Write-Log -Msg "文件下载不完整"
     exit 0 
 }

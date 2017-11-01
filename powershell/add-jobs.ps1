@@ -1,7 +1,7 @@
-$HOURLY_JOB_NAME="每小时执行一次"
+$HOURLY_JOB_NAME="HOURLY_JOBS"
 $HOURLY_JOB_FILE="D:\Bin\tasks\hourly.ps1"
 
-$DAILY_JOB_NAME="每天执行一次"
+$DAILY_JOB_NAME="DAILY_JOBS"
 $DAILY_JOB_FILE="D:\Bin\tasks\daily.ps1"
 
 Register-ScheduledJob -Name $HOURLY_JOB_NAME -FilePath $HOURLY_JOB_FILE
