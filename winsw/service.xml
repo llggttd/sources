@@ -1,0 +1,145 @@
+<!--
+    Copyright (c) 2016 Oleg Nenashev and other contributors
+
+    Permission is hereby granted, free of charge, to any person obtaining a copy of this 
+    software and associated documentation files (the "Software"), to deal in the Software without
+    restriction, including without limitation the rights to use, copy, modify, merge, publish,
+    distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the
+    Software is furnished to do so, subject to the following conditions:
+
+    The above copyright notice and this permission notice shall be included in all copies or 
+    substantial portions of the Software.
+
+    THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING 
+    BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+    NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, 
+    DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, 
+    OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+-->
+
+<!--
+ This configuration file should be placed near the winsw.exe executable, the name should be the same.
+ E.g. for winsw.exe the configuration file name should be winsw.xml
+ 
+ You can find more information about configuration options here: https://github.com/kohsuke/winsw/blob/master/doc/xmlConfigFile.md
+-->
+<configuration>
+  
+<!-- 
+SECTION: Mandatory options
+All options in other sections are optional 
+-->
+
+  <id>OpenRestry</id>
+  <name>OpenRestry Lua Web Server</name>
+  <description>OpenResty是一个基于NGINX的可伸缩的Web平台，Web开发人员可以使用Lua脚本语言调动Nginx支持的各种C以及Lua模块，更主要的是在性能方面，OpenResty可以快速构造出足以胜任10K以上并发连接响应的超高性能Web应用系统。</description>
+  <executable>%BASE%\nginx.exe</executable>
+
+<!--
+SECTION: Executable management
+-->
+
+  <!-- 
+    OPTION: startarguments
+    Arguments, which should be passed to the executable when it starts
+    If specified, overrides 'arguments'.
+  -->
+  
+  <startarguments>-p %BASE%</startarguments>
+ 
+  
+  <!--
+    OPTION: workingdirectory
+    If specified, sets the default working directory of the executable
+    Default value: Directory of the service wrapper executable.
+  -->
+  
+  <workingdirectory>%BASE%</workingdirectory>
+
+  
+  <!--
+    OPTION: priority
+    Desired process priority.
+    Possible values: Normal, Idle, High, RealTime, BelowNormal, AboveNormal
+    Default value: Normal
+  -->
+  <priority>Normal</priority>
+  
+  <!-- 
+    OPTION: stoptimeout
+    Time to wait for the service to gracefully shutdown the executable before we forcibly kill it
+    Default value: 15 seconds
+  -->
+  <stoptimeout>5 sec</stoptimeout>
+    
+  <!--
+    OPTION: stopparentprocessfirst
+    If set, WinSW will terminate the parent process before stopping the children.
+    Default value: false
+  -->
+  <stopparentprocessfirst>false</stopparentprocessfirst>
+  
+  
+  <!-- 
+    OPTION: stopexecutable
+    Path to an optional executable, which performs shutdown of the service.
+    This executable will be used if and only if 'stoparguments' are specified.
+    If 'stoparguments' are defined without this option, 'executable' will be used as a stop executable
+  -->
+  
+  <stopexecutable>%BASE%\nginx.exe</stopexecutable>
+ 
+
+  <!-- 
+    OPTION: stoparguments
+    Additional arguments, which should be passed to the stop executable during termination.
+    This OPTION also enables termination of the executable via stop executable
+  -->
+  
+  <stoparguments>-s stop -p %BASE%</stoparguments>
+ 
+<!-- 
+SECTION: Service management 
+-->
+  <!--
+    OPTION: startmode
+    Defines start mode of the service.
+    Supported modes: Automatic, Manual, Boot, System (latter ones are supported for driver services only)
+    Default mode: Automatic
+  -->
+  <startmode>Automatic</startmode>
+    
+<!-- 
+SECTION:Logging 
+-->
+
+  <!--
+    OPTION: logpath
+    Sets a custom logging directory for all logs being produced by the service wrapper
+    Default value: Directory, which contains the executor
+  -->
+  <logpath>%BASE%\logs</logpath>
+ 
+  
+  <!--
+    OPTION: log
+    Defines logging mode for logs produced by the executable.
+    Supported modes:
+      * append - Rust update the existing log
+      * none - Do not save executable logs to the disk
+      * reset - Wipe the log files on startup
+      * roll - Rotate logs based on size
+      * roll-by-time - Rotate logs based on time
+      * rotate - Rotate logs based on size, (8 logs, 10MB each). This mode is deprecated, use "roll"
+    Default mode: append
+    
+    Each mode has different settings. 
+    See https://github.com/kohsuke/winsw/blob/master/doc/loggingAndErrorReporting.md for more details
+  -->
+  <log mode="append">
+    <!--
+    <setting1/>
+    <setting2/>
+    -->
+  </log>
+</configuration>
