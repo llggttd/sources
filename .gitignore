@@ -1,2 +1,7 @@
 node_modules
 go/*.exe
+*.iml
+.gradle
+.idea
+build
+local.properties
