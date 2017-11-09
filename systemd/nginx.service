@@ -1,0 +1,15 @@
+[Unit]
+Description=OpenResty is a dynamic web platform based on NGINX and LuaJIT.
+After=syslog.target network.target remote-fs.target nss-lookup.target
+
+[Service]
+Type=forking
+PIDFile=/usr/local/openresty/nginx/logs/nginx.pid
+ExecStartPre=/usr/local/openresty/nginx/sbin/nginx -t
+ExecStart=/usr/local/openresty/nginx/sbin/nginx
+ExecReload=/usr/local/openresty/nginx/sbin/nginx -s reload
+ExecStop=/usr/local/openresty/nginx/sbin/nginx -s quit 
+PrivateTmp=true
+
+[Install]
+WantedBy=multi-user.target

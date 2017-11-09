@@ -1,33 +1,25 @@
 #!/bin/bash
 
-BIN_PATH=""
-BIN_NAME=""
-BIN_LOG="run.log"
-HAS_RUN=0
+PROG_PATH=""
+PROG_NAME=""
+PROD_LOG="run.log"
+RUN=0
 TICK=60
 
-while true ; do
-    if [ $HAS_RUN -gt 0 ]; then
+function run-prog () {
+    $PROG_PATH/$PROG_NAME -p 12345 -u ZZJR 2>/dev/null 1>&2 &
+}
+
+while true; do
+    if [ $RUN -gt 0 ]; then
         sleep $TICK
+        RUN=0
     fi
-    HAS_RUN=1
-
-    date >> $BIN_LOG
-    # PRO_NOW=`ps aux | grep $BIN_NAME | grep -v grep | wc -l`
-    # if [ $PRO_NOW -lt 1]; then
-    #     $BIN_PATH/$BIN_NAME -p $PARAM_PORT -u $PARAM_USER 2>/dev/null 1>&2 &
-    #     date >> $BIN_PATH/$BIN_LOG
-    #     echo "Start $BIN_NAME" >> $BIN_PATH/$BIN_LOG
-    # fi
-
-    # PRO_STAT=`ps aux|grep $BIN_NAME |grep T|grep -v grep|wc -l`
-
-    # if [ $PRO_STAT -gt 0 ] ; then
-    #     killall -9 $BIN_NAME
-    #     sleep 5
-    #     $BIN_PATH/$BIN_NAME -p $PARAM_PORT -u $PARAM_USER 2>/dev/null 1>&2 &
-    #     date >> $BIN_PATH/$BIN_LOG
-    #     echo "Start $BIN_NAME" >> $BIN_PATH/$BIN_LOG
-    # fi
+    RUN=1
+    if [ `ps aux | grep $PROG_NAME | grep -v grep | wc -l` -lt 1 ]; then
+        run-prog
+        echo `date +%Y%m%d %H%M%S` >> $PROG_PATH/$PROD_LOG
+        echo "start $PROG_NAME success." >> $PROG_PATH/$PROD_LOG
+    fi
 done
 exit 0
