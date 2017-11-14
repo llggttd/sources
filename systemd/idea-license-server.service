@@ -1,0 +1,11 @@
+[Unit]
+Description=Intellij Idea License Server.
+After=syslog.target network.target remote-fs.target nss-lookup.target
+
+[Service]
+Type=forking
+ExecStart=/opt/idea/start.sh &
+PrivateTmp=true
+
+[Install]
+WantedBy=multi-user.target
