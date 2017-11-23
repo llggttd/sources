@@ -104,7 +104,6 @@ public class AtlassianLicenseGenerator {
         try {
             KeyFactory keyFactory = KeyFactory.getInstance("DSA");
             publicKey = keyFactory.generatePublic(new X509EncodedKeySpec(Base64.decodeBase64(publicKeyStr.getBytes())));
-            System.out.println("public" + publicKey.getAlgorithm());
             privateKey = keyFactory.generatePrivate(new PKCS8EncodedKeySpec(Base64.decodeBase64(privateKeyStr.getBytes())));
             System.out.println(privateKey.getAlgorithm());
         } catch (Exception e) {
