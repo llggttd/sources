@@ -1,0 +1,17 @@
+server:
+  port: 8001
+
+info:
+  app:
+    name: boot
+    version: 1.0.0
+
+logging:
+  level: trace
+
+management:
+  security:
+    enabled: false
+endpoints:
+  health:
+    sensitive: false

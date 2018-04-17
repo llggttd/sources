@@ -1,0 +1,14 @@
+server:
+  port: 8202
+
+spring:
+  application:
+    name: service-item
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://eureka.local.com:8101/eureka/,http://eureka.local.com:8102/eureka/,http://eureka.local.com:8103/eureka/
+    region: CN
+
+
