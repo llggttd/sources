@@ -12,6 +12,11 @@ logging:
 management:
   security:
     enabled: false
+
 endpoints:
   health:
     sensitive: false
+
+banner:
+  image:
+    location: classpath:banner.png
