@@ -20,6 +20,7 @@ public class ProbeApplicationListener implements ApplicationListener<Application
 
     @Override
     public void onApplicationEvent(ApplicationEvent event) {
+        System.out.println("SOUT event " + event.toString());
         logger.error("event - {}", event);
         System.out.println("event - " + event.toString());
     }

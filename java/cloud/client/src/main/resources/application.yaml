@@ -1,9 +1,9 @@
 server:
-  port: 8101
+  port: 8301
 
 spring:
   application:
-    name: REGISTRY
+    name: client
 
 eureka:
   client:
@@ -17,7 +17,3 @@ eureka:
     region: China
     availability-zones:
       China: zone-1,zone-2,zone-3
-  instance:
-    hostname: eureka.local.com
-
-
