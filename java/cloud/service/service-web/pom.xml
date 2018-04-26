@@ -4,12 +4,12 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <parent>
+        <artifactId>service</artifactId>
         <groupId>top.crazyman</groupId>
-        <artifactId>parent</artifactId>
         <version>1.0.0</version>
     </parent>
-    <artifactId>registry</artifactId>
-    <version>1.0.0</version>
+    <artifactId>service-web</artifactId>
+    <packaging>jar</packaging>
 
     <dependencies>
         <dependency>
@@ -32,8 +32,14 @@
         </dependency>
         <dependency>
             <groupId>org.springframework.cloud</groupId>
-            <artifactId>spring-cloud-starter-netflix-eureka-server</artifactId>
+            <artifactId>spring-cloud-starter-netflix-eureka-client</artifactId>
+        </dependency>
+
+        <!-- self dependency -->
+        <dependency>
+            <groupId>top.crazyman</groupId>
+            <artifactId>service-api</artifactId>
         </dependency>
     </dependencies>
-    
+
 </project>
