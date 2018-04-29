@@ -1,0 +1,9 @@
+server:
+  port: 8001
+
+spring:
+  application:
+    name: boot
+  cloud:
+    config:
+      uri: http://localhost:8002

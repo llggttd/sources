@@ -1,0 +1,16 @@
+{
+  "name": "mredis",
+  "version": "1.0.0",
+  "description": "redis cluster operator",
+  "main": "index.js",
+  "scripts": {
+    "prepackage": "rm release/mredis.exe",
+    "package": "nexe -o release/mredis.exe -t windows-x64-8.11.1"
+  },
+  "author": "0z0ne",
+  "license": "ISC",
+  "dependencies": {
+    "args": "^4.0.0",
+    "ioredis": "^3.2.2"
+  }
+}
