@@ -1,4 +1,4 @@
-package top.crazyman.service.web;
+package top.crazyman.service.web.controller;
 
 import org.springframework.web.bind.annotation.RestController;
 import top.crazyman.service.api.DateRemoteService;
@@ -18,7 +18,6 @@ public class DateController implements DateRemoteService {
 
     @Override
     public DateEntity getCurrentDate() {
-
         DateEntity result = new DateEntity();
         Date current = new Date();
         result.setDate(current);

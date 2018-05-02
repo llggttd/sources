@@ -1,19 +1,14 @@
 server:
-  port: 8101
+  port: 8301
 
 spring:
   application:
-    name: REGISTRY
+    name: client-service
 
 eureka:
   client:
-    register-with-eureka: true
-    fetch-registry: true
-    prefer-same-zone-eureka: true
     service-url:
       defaultZone: http://eureka.local.com:8101/eureka/,http://eureka.local.com:8102/eureka/,http://eureka.local.com:8103/eureka/
-    region: China
-  instance:
-    hostname: eureka.local.com
+    region: CN
 
 

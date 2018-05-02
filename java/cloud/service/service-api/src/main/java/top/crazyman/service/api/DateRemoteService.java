@@ -10,9 +10,9 @@ import top.crazyman.service.entity.DateEntity;
  * @date Create on 2018/4/26
  * @since version 1.0 Copyright 2018 ZZJR All Rights Reserved.
  */
-@RequestMapping("/date-remote-service")
+@RequestMapping("/common-service")
 public interface DateRemoteService {
 
-    @RequestMapping("/data/current")
+    @RequestMapping("/data")
     DateEntity getCurrentDate();
 }
