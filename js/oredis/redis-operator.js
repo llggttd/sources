@@ -29,10 +29,17 @@ RedisOperator.prototype.getRedisHandle = function () {
  * @param {string} pattern query string pattern
  */
 RedisOperator.prototype.keys = function (pattern) {
+	let handler = this.getRedisHandle()
 	return Promise.all(this.nodes.map(function (node) {
 		return node.keys(pattern)
 	})).then(function (data) {
 		return Promise.resolve(utils.uniqConcat(data))
+	}).then(function (data) {
+		return Promise.all(data.map(function (key) {
+			return handler.type(key).then(function (result) {
+				return { key: key, type: result }
+			})
+		}))
 	})
 }
 

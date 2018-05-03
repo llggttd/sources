@@ -41,10 +41,20 @@ if (!options.key || !/^[*]?[^*]+[*]?$|^[*]$/.test(options.key)) {
 
 config.load(options.config)
 
-const redisOperator = new RedisOperator({
-  'host': 'localhost',
-  'port': '6379'
-})
+let hosts = config.getHosts()
+let option = {}
+if (hosts.length <= 0) {
+  if (!options.host || !options.port) {
+    utils.printWarning('请指定要连接的服务器')
+    process.exit()
+  }
+  option.host = 'localhost'
+  option.port = '6379'
+} else {
+  option.cluster = hosts
+}
+
+const redisOperator = new RedisOperator(option)
 
 switch (options.command) {
 

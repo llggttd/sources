@@ -1,11 +1,11 @@
 {
-  "name": "mredis",
+  "name": "oredis",
   "version": "1.0.0",
   "description": "redis cluster operator",
   "main": "index.js",
   "scripts": {
-    "prepackage": "rm release/mredis.exe",
-    "package": "nexe -o release/mredis.exe -t windows-x64-8.11.1"
+    "prepackage": "test -e release/oredis.exe && rm release/oredis.exe || echo done",
+    "package": "nexe -o release/oredis.exe -t windows-x64-8.11.1"
   },
   "author": "0z0ne",
   "license": "ISC",
