@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="icon" href="./favicon.ico">
+    <title>Electron Bootstrap</title>
+    <link href="./static/css/bootstrap.min.css" rel="stylesheet">
+    <link href="./static/css/cover.css" rel="stylesheet">
+    <link href="./static/css/highlight.css" rel="stylesheet">
+  </head>
+
+  <body class="text-center">
+
+    <div class="cover-container h-100 p-3 col-md-12">
+      <main role="main" class="inner cover">
+        <h3 class="cover-heading">用户信息查询</h3>
+        <div class="col-md-12 input-group search-input">
+          <input type="text" class="form-control" placeholder="证件号/存管编号">
+          <div class="input-group-append">
+            <button class="btn btn-outline-secondary" type="button">确定</button>
+          </div>
+        </div>
+        <pre>
+          <code style="text-align: left" class="json">
+          </code>
+        </pre>
+      </main>
+
+      <footer class="mastfoot col-md-12 text-center">
+        <div class="inner">
+          <p><a href="#">0z0ne</a>&copy;</p>
+        </div>
+      </footer>
+    </div>
+
+
+    <!-- Bootstrap core JavaScript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="./static/js/jquery-slim.min.js"></script>
+    <script>if (typeof module === 'object') {window.jQuery = window.$ = module.exports;}</script>
+    <script src="./static/js/popper.min.js"></script>
+    <script src="./static/js/bootstrap.min.js"></script>
+    <script src="./static/js/highlight.min.js"></script>
+    <script>hljs.initHighlightingOnLoad();</script>
+    <script>require('./renderer.js');</script>
+  </body>
+</html>
