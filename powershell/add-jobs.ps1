@@ -1,13 +1,6 @@
-$HOURLY_JOB_NAME="HOURLY_JOBS"
-$HOURLY_JOB_FILE="D:\Bin\tasks\hourly.ps1"
+$JOB_NAME = "Update Networx"
+$JOB_FILE = "D:\Bin\task-update-networx.ps1"
 
-$DAILY_JOB_NAME="DAILY_JOBS"
-$DAILY_JOB_FILE="D:\Bin\tasks\daily.ps1"
-
-Register-ScheduledJob -Name $HOURLY_JOB_NAME -FilePath $HOURLY_JOB_FILE
-$HOURLY_TIGGER = New-JobTrigger -Once -At "06:00" -RepetitionInterval "01:00:00" -RepeatIndefinitely
-Add-JobTrigger -Name $HOURLY_JOB_NAME -Trigger $HOURLY_TIGGER
-
-Register-ScheduledJob -Name $DAILY_JOB_NAME -FilePath $DAILY_JOB_FILE
-$DAILY_TIGGER = New-JobTrigger -Daily -At "9:20" -DaysInterval 1
-Add-JobTrigger -Name $DAILY_JOB_NAME -Trigger $DAILY_TIGGER
+Register-ScheduledJob -Name $JOB_NAME -FilePath $JOB_FILE
+$TIGGER = New-JobTrigger -Once -At "20:00" -RepetitionInterval "00:01:00" -RepeatIndefinitely
+Add-JobTrigger -Name $JOB_NAME -Trigger $TIGGER
