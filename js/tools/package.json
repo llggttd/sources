@@ -1,14 +1,21 @@
 {
-  "name": "bank",
+  "name": "hicube",
   "version": "1.0.0",
-  "description": "",
+  "description": "a collection of useful tools",
   "main": "main.js",
   "scripts": {
     "start": "electron ."
   },
-  "author": "",
+  "author": "0z0ne",
   "license": "ISC",
   "devDependencies": {
     "electron": "^2.0.2"
+  },
+  "dependencies": {
+    "electron-store": "^2.0.0",
+    "moment": "^2.22.2",
+    "node-rsa": "^1.0.0",
+    "request": "^2.87.0",
+    "uuid": "^3.2.1"
   }
 }
