@@ -2,6 +2,7 @@ package top.crazyman.quick.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import top.crazyman.quick.entities.Entities;
 import top.crazyman.quick.enums.EntitiesTypeEnum;
@@ -27,9 +28,10 @@ public class EntitiesController extends BaseController {
     private EntitiesMapper entitiesMapper;
 
     @RequestMapping("/api/test")
-    public Map<String, Object> test(HttpServletRequest request) {
+    public Map<String, Object> test(HttpServletRequest request,
+                                    @RequestParam(name = "o_k") String name) {
         HashMap<String, Object> map = new HashMap<>(2);
-        map.put("name", "root");
+        map.put("name", name);
         map.put("pass", "1234");
         map.put("count", getCount(request));
         return map;

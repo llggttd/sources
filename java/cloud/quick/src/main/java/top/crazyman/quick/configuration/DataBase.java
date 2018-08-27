@@ -25,7 +25,7 @@ import javax.sql.DataSource;
  */
 @Configuration
 @MapperScan("top.crazyman.quick")
-public class Database {
+public class DataBase {
 
     private final static String URL = "jdbc:mysql://127.0.0.1:3306/quick?useUnicode=true&characterEncoding=UTF-8&useSSL=false";
     private final static String USER = "root";
