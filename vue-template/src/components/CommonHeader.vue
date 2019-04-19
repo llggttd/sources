@@ -7,14 +7,8 @@
     </button>
     <div class="collapse navbar-collapse" id="navbars">
       <ul class="navbar-nav mr-auto">
-        <li class="nav-item" v-bind:class="{ active: active === 1}">
-          <router-link to="/" class="nav-link">首页</router-link>
-        </li>
-        <li class="nav-item" v-bind:class="{ active: active === 2}">
-          <router-link to="/me" class="nav-link">工具</router-link>
-        </li>
-        <li class="nav-item" v-bind:class="{ active: active === 3}">
-        <router-link to="/about" class="nav-link">系统</router-link>
+        <li v-for="(item, index) in items" v-bind:key="index" v-bind:class="{ active: active == index }">
+          <router-link :to="item.path" class="nav-link">{{ item.title }}</router-link>
         </li>
       </ul>
     </div>
@@ -24,7 +18,10 @@
 <script>
 export default {
   name: 'CommonHeader',
-  props: ['active'],
+  props: {
+    items: Array,
+    active: Number
+  },
   data () {
     return {
     }

@@ -1,27 +1,22 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import Home from '@/modules/Home'
-import About from '@/modules/About'
-import Me from '@/modules/Me'
+import Tools from '@/modules/Tools'
+import System from '@/modules/System'
 
 Vue.use(Router)
 export const items = [
   {
     path: '/',
-    name: 'home',
-    title: '首页'
+    name: 'tools',
+    title: '工具'
   }, {
-    path: '/me',
-    name: 'me',
-    title: '我们'
-  }, {
-    path: '/help',
-    name: 'help',
-    title: '帮助'
+    path: '/system',
+    name: 'system',
+    title: '系统'
   }
 ]
 
-let components = [Home, Me, About]
+let components = [Tools, System]
 let routes = []
 for (let i = 0; i < items.length; i++) {
   routes.push({

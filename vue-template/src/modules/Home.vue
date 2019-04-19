@@ -1,13 +1,9 @@
 <template>
   <div class="outer">
-    <common-header :items="items" :active="2"></common-header>
+    <common-header :items="items" :active="0"></common-header>
     <main role="main" class="container">
-
-      <div>
-        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modalBox">确定</button>
-        <centered-modal v-bind:modalTitle="title" v-bind:modalMessage="message" v-on:save="save"/>
-      </div>
-
+      <h1>Home</h1>
+      <h3>{{ msg }}</h3>
     </main>
     <common-footer></common-footer>
   </div>
@@ -16,26 +12,18 @@
 <script>
 import CommonHeader from '@/components/CommonHeader'
 import CommonFooter from '@/components/CommonFooter'
-import CenteredModal from '@/components/CenteredModal'
 import { items } from '@/pages/starter/router'
 
 export default {
-  name: 'About',
+  name: 'Home',
   components: {
     CommonHeader,
-    CommonFooter,
-    CenteredModal
+    CommonFooter
   },
   data () {
     return {
       items,
-      title: '提示',
-      message: '重跑之前的数据需要1-2分钟，在任务结束前请不要关闭本页面。'
-    }
-  },
-  methods: {
-    save: function () {
-      console.log('centered-modal save')
+      msg: '如果你为了俯瞰大地上的各个王国而登上了雄伟的马特峰，竟在山顶上发现了草莓，这也许是令人愉快的事情。但是，你不是为了草莓才去攀登山峰的。'
     }
   }
 }
@@ -43,8 +31,7 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-h1,
-h2 {
+h1, h2 {
   font-weight: normal;
 }
 ul {

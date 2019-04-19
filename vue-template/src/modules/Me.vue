@@ -1,6 +1,6 @@
 <template>
   <div class="outer">
-    <common-header :active=2></common-header>
+    <common-header :items="items" :active="1"></common-header>
     <main role="main" class="container">
       <h1>Me</h1>
       <h3>{{ msg }}</h3>
@@ -12,6 +12,7 @@
 <script>
 import CommonHeader from '@/components/CommonHeader'
 import CommonFooter from '@/components/CommonFooter'
+import { items } from '@/pages/starter/router'
 
 export default {
   name: 'Me',
@@ -21,6 +22,7 @@ export default {
   },
   data () {
     return {
+      items,
       msg: 'This is Me'
     }
   }
