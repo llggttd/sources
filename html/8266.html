@@ -11,25 +11,45 @@
   <title>CrazyMan</title>
   <link href="https://cdn.bootcss.com/twitter-bootstrap/4.4.1/css/bootstrap.min.css" rel="stylesheet">
   <link href="https://cdn.bootcss.com/bootstrap-switch/4.0.0-alpha.1/css/bootstrap-switch.min.css" rel="stylesheet">
-  
+
   <style>
+    body {
+      display: table;
+      background-color: #7E7E7E;
+      color: #FFFFFF;
+    }
+
+    .switch {
+      margin-top: 120px;
+    }
   </style>
 </head>
 
-<body class="w-100 h-100" style="display: table;background-color: #7E7E7E; color: #ffffff">
-  <div class="row mt-4 mb-4">
-    <div class="col-sm-2 offset-5">
-      <div class="mt-2 mb-2">
+<body class="w-100 h-100">
+  <div class="container">
+    <div class="row text-center switch">
+      <div class="col-sm"></div>
+      <div class="col-sm">
         <input type="checkbox" style="background-color: #434343" name="my-checkbox" data-size="small" checked>
       </div>
+      <div class="col-sm"></div>
     </div>
   </div>
+
   <script src="https://cdn.bootcss.com/jquery/3.5.0/jquery.min.js"></script>
   <script src="https://cdn.bootcss.com/twitter-bootstrap/4.4.1/js/bootstrap.min.js"></script>
   <script src="https://cdn.bootcss.com/bootstrap-switch/4.0.0-alpha.1/js/bootstrap-switch.min.js"></script>
   <script>
     $('document').ready(function () {
       $("[name='my-checkbox']").bootstrapSwitch({
+        onColor: 'success',
+        // offColor: 'info',
+        onText: '打开',
+        offText: '关闭',
+        labelText: '&nbsp',
+        handleWidth: 'auto',
+        labelWidth: 'auto',
+        baseClass: 'bootstrap-switch',
         onSwitchChange: (item) => {
           console.log(item.target.checked)
         }
