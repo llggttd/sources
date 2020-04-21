@@ -22,6 +22,10 @@
     .switch {
       margin-top: 120px;
     }
+
+    .bootstrap-switch-item {
+      background-color: #6E6E6E;
+    }
   </style>
 </head>
 
@@ -30,7 +34,7 @@
     <div class="row text-center switch">
       <div class="col-sm"></div>
       <div class="col-sm">
-        <input type="checkbox" style="background-color: #434343" name="my-checkbox" data-size="small" checked>
+        <input type="checkbox" style="background-color: #434343" name="switch_led" checked>
       </div>
       <div class="col-sm"></div>
     </div>
@@ -41,15 +45,17 @@
   <script src="https://cdn.bootcss.com/bootstrap-switch/4.0.0-alpha.1/js/bootstrap-switch.min.js"></script>
   <script>
     $('document').ready(function () {
-      $("[name='my-checkbox']").bootstrapSwitch({
+      $("[name='switch_led']").bootstrapSwitch({
+        size: 'small', // mini|small|large
+        state: false,
         onColor: 'success',
-        // offColor: 'info',
+        offColor: 'info',
         onText: '打开',
         offText: '关闭',
-        labelText: '&nbsp',
+        labelText: 'LED',
         handleWidth: 'auto',
         labelWidth: 'auto',
-        baseClass: 'bootstrap-switch',
+        wrapperClass: 'item',
         onSwitchChange: (item) => {
           console.log(item.target.checked)
         }
