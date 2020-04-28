@@ -10,22 +10,22 @@ function _M.create()
 end
 
 function _M:clean()
-	self._skt:on('sent', function() end)
-	self._skt:on('receive', function() end)
-	self._skt:close()
-	self._skt = nil
+	self._sck:on('sent', function() end)
+	self._sck:on('receive', function() end)
+	self._sck:close()
+	self._sck = nil
 end
 
 function _M:close()
 	self._server:close()
-	self._R = nil
+	self._Midwares = nil
 end
 
 function _M:listen(port)
   return self._server:listen(port, function(connect)
-		connect:on('receive', function(skt, msg)	
-			local request = { source = msg, path = '', ip = skt:getpeer() }
-			local response = Res:new(skt)
+		connect:on('receive', function(sck, msg)	
+			local request = { data = msg, path = '', ip = sck:getpeer() }
+			local response = {}
 			
 			for i = 1, #self._Midwares do
 				if string.find(request.path, '^' .. self._Midwares[i].p .. '$') then
@@ -100,13 +100,13 @@ function Res:sendFile(filename)
 		else
 			local buf = file.read(512)
 			pos = pos + 512
-			self._skt:send(buf)
+			self._sck:send(buf)
 		end
 		file.close()
 	end
-	self._skt:on('sent', doSend)
+	self._sck:on('sent', doSend)
 	
-	self._skt:send(header)
+	self._sck:send(header)
 end
 
 function Res:send(body)
@@ -125,11 +125,11 @@ function Res:send(body)
 		if buf == '' then 
 			self:close()
 		else
-			self._skt:send(string.sub(buf, 1, 512))
+			self._sck:send(string.sub(buf, 1, 512))
 			buf = string.sub(buf, 513)
 		end
 	end
-	self._skt:on('sent', doSend)
+	self._sck:on('sent', doSend)
 
 	doSend()
 end
