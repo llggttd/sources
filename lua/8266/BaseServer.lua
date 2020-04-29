@@ -3,66 +3,85 @@ local _M = {}
 
 function _M.create()
 	local object = {}
-	object._R = {}
+	object._handlers = {}
   object._server = net.createServer(net.TCP, 15)
   setmetatable(object, mt)
   return object
 end
 
-function _M:clean()
-	self._sck:on('sent', function() end)
-	self._sck:on('receive', function() end)
-	self._sck:close()
-	self._sck = nil
+function _M:clean(request, response)
+	request:clean()
+	response:clean()
+	collectgarbage()
+
+	-- self._sck:on('sent', function() end)
+	-- self._sck:on('receive', function() end)
+	-- self._sck:close()
+	-- self._sck = nil
 end
 
 function _M:close()
 	self._server:close()
-	self._Midwares = nil
+	self._handlers = nil
 end
 
 function _M:listen(port)
   return self._server:listen(port, function(connect)
 		connect:on('receive', function(sck, msg)	
-			local request = { data = msg, path = '', ip = sck:getpeer() }
-			local response = {}
-			
-			for i = 1, #self._Midwares do
-				if string.find(request.path, '^' .. self._Midwares[i].p .. '$') then
-					self._Midwares[i].c(request, response)
+			local request = { data = msg, path = '', _sck = sck }
+			local response = { _sck = sck}
+			for i = 1, #self._handlers do
+				if string.find(request.path, '^' .. self._handlers[i].p .. '$') then
+					self._handlers[i].c(request, response)
 				end
 			end
-
+			request:clean()
+			response:clean()
 			collectgarbage()
-			
 		end)
 	end)
 end
 
 function _M:use(pattern, callback)
-	table.insert(self._Midwares, #self._Midwares, {
+	table.insert(self._handlers, #self._handlers, {
 		p = pattern,
 		c = callback
 	})
 end
 
-function parseHeader(req, res)
-	local _, _, method, path, vars = string.find(req.source, '([A-Z]+) (.+)?(.+) HTTP')
+function methodHandle(request, response)
+	local _, _, method, path, vars = string.find(request.data, '([A-Z]+) (.-)?(.-) HTTP')
 	if method == nil then
-		_, _, method, path = string.find(req.source, '([A-Z]+) (.+) HTTP')
+		_, _, method, path = string.find(request.data, '([A-Z]+) (.-) HTTP')
 	end
-	local _GET = {}
+	local _QUERY = {}
 	if vars ~= nil then
 		vars = urlDecode(vars)
 		for k, v in string.gmatch(vars, '([^&]+)=([^&]*)&*') do
-			_GET[k] = v
+			_QUERY[k] = v
 		end
 	end
-	
-	req.method = method
-	req.query = _GET
-	req.path = path
-	
+	request.method = method
+	request.query = _QUERY
+	request.path = path
+	return true
+end
+
+function headerHandle(request, response)
+	local _, _, method, path, vars = string.find(request.data, '([A-Z]+) (.-)?(.-) HTTP')
+	if method == nil then
+		_, _, method, path = string.find(request.data, '([A-Z]+) (.-) HTTP')
+	end
+	local _QUERY = {}
+	if vars ~= nil then
+		vars = urlDecode(vars)
+		for k, v in string.gmatch(vars, '([^&]+)=([^&]*)&*') do
+			_QUERY[k] = v
+		end
+	end
+	request.method = method
+	request.query = _QUERY
+	request.path = path
 	return true
 end
 
@@ -142,6 +161,20 @@ function staticFile(request, response)
 		filename = string.gsub(string.sub(request.path, 2), '/', '_')
 	end
 	request:sendFile(filename)
+end
+
+local function urlEncode(input)  
+	input = string.gsub(input, "([^%w%.%- ])", function(c)
+		return string.format("%%%02X", string.byte(c))
+	end)  
+ return string.gsub(input, " ", "+")  
+end  
+
+local function urlDecode(input)  
+	input = string.gsub(input, '%%(%x%x)',function(h)
+		return string.char(tonumber(h, 16))
+	end)
+	return input 
 end
 
 return _M
