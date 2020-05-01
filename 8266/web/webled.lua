@@ -66,7 +66,7 @@ function start_web()
 	server:listen(80)
 end
 
-led_light(false)
+led_light(true)
 
 config_wifi()
 

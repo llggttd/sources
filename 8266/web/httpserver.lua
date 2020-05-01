@@ -47,6 +47,7 @@ function createResponse(sck)
 end
 
 function initHandle(request, response)
+	local _METHOD, _PATH
 	local _HEADER = {}
 	local _QUERY = {}
 	local _BODY = {}
@@ -58,8 +59,8 @@ function initHandle(request, response)
 		local line = request._data:sub(1, start - 1)
 		request._data = request._data:sub(start + 2)
 		if #line > 0 then
-			-- 请求行解析
-			if request.method == nil then
+			if _METHOD == nil then
+				-- 请求行解析
 				local _, _, method, path, vars = line:find("([A-Z]+) (.-)?(.-) HTTP")
 				if method == nil then
 					_, _, method, path = line:find("([A-Z]+) (.-) HTTP")
@@ -70,12 +71,14 @@ function initHandle(request, response)
 						_QUERY[k] = v
 					end
 				end
-			end
-			-- 请求头解析
-			local _, _, k, v = line:find("^([%w-]+):%s*(.+)")
-			if k then
-				k = k:lower()
-				_HEADER[k] = v
+				_METHOD = method or "GET"
+				_PATH = path or "/"
+			else
+				-- 请求头解析
+				local _, _, k, v = line:find("^([%w-]+):%s*(.+)")
+				if k then
+					_HEADER[k:lower()] = v
+				end
 			end
 		else
 			-- 遇到空行时可能进入到请求体
@@ -83,15 +86,15 @@ function initHandle(request, response)
 		end
 	end
 
-	request.method = method or "GET"
-	request.path = path or "/"
+	request.method = _METHOD
+	request.path = _PATH
 	request.query = _QUERY
 	request.headers = _HEADER
 
 	-- 请求体解析
 	if request._data ~= nil and _HEADER["content-type"] ~= nil then
 		if string.find(_HEADER["content-type"], "x-www-form-urlencoded", 1, true) then
-			body = urlDecode(request.data)
+			body = urlDecode(request._data)
 			for k, v in string.gmatch(body, "([^&]+)=([^&]*)&*") do
 				_BODY[k] = v
 			end
@@ -182,7 +185,7 @@ function indexHandle(request, response)
 	end
 end
 
-local function urlEncode(input)
+function urlEncode(input)
 	input =
 		string.gsub(
 		input,
@@ -194,7 +197,7 @@ local function urlEncode(input)
 	return string.gsub(input, " ", "+")
 end
 
-local function urlDecode(input)
+function urlDecode(input)
 	input =
 		string.gsub(
 		input,

@@ -1,3 +1,7 @@
-local HttpServer = require("baseclass")
-local server = HttpServer:create()
-server:listen(80)
+local a = "0"
+
+local n = tonumber(a)
+if n then
+    print("0k")
+    print(n)
+end
