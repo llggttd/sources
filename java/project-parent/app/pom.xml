@@ -41,6 +41,10 @@
             <groupId>com.example.project</groupId>
             <artifactId>task</artifactId>
         </dependency>
+        <dependency>
+            <groupId>com.example.project</groupId>
+            <artifactId>common</artifactId>
+        </dependency>
     </dependencies>
 
     <build>
