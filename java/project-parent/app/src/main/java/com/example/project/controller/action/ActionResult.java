@@ -2,7 +2,7 @@
  * yinghuo.com Inc.
  * Copyright (c) 2013-2020 All Rights Reserved.
  */
-package com.example.project.controller;
+package com.example.project.controller.action;
 
 /**
  * @author Guotao.Liu

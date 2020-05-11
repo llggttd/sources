@@ -2,7 +2,7 @@
  * yinghuo.com Inc.
  * Copyright (c) 2013-2020 All Rights Reserved.
  */
-package com.example.project.controller;
+package com.example.project.controller.action;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -10,6 +10,8 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
@@ -17,8 +19,6 @@ import org.springframework.stereotype.Component;
 
 import com.example.project.common.HttpResult;
 import com.example.project.common.enums.ResultCodeEnum;
-import com.example.project.controller.action.ActionHandle;
-import com.example.project.controller.action.ActionMeta;
 
 /**
  * @author Guotao.Liu
@@ -27,9 +27,9 @@ import com.example.project.controller.action.ActionMeta;
 @Component
 public class ActionAdapter implements ApplicationContextAware {
 
-    private final static String     PARAM_ACTION = "action";
-    private final static String     PARAM_DATA   = "data";
-    private Map<ActionMeta, Action> actions      = new HashMap<>();
+    private final static Logger           logger  = LoggerFactory.getLogger(ActionAdapter.class);
+
+    private final Map<ActionMeta, Action> actions = new HashMap<>();
 
     private Action deduceAction(ActionMeta action) {
         return actions.get(action);
@@ -37,8 +37,8 @@ public class ActionAdapter implements ApplicationContextAware {
 
     public HttpResult<?> action(HttpServletRequest request, HttpServletResponse response) {
 
-        String actionName = request.getParameter(PARAM_ACTION);
-        String data = request.getParameter(PARAM_DATA);
+        String actionName = request.getParameter(ParamConstant.ACTION);
+        String data = request.getParameter(ParamConstant.DATA);
         Action action = deduceAction(ActionMeta.getByName(actionName));
         ActionResult actionResult;
         try {
