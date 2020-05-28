@@ -51,7 +51,7 @@ public class XxlConfListenerFactory {
                 logger.error(e.getMessage(), e);
             }
 
-            // listene this key
+            // listen this key
             List<XxlConfListener> listeners = keyListenerRepository.get(key);
             if (listeners == null) {
                 listeners = new ArrayList<>();
