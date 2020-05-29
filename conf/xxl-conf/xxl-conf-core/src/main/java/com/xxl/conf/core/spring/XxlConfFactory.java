@@ -70,10 +70,8 @@ public class XxlConfFactory extends InstantiationAwareBeanPostProcessorAdapter i
     @Override
     public boolean postProcessAfterInstantiation(final Object bean,
                                                  final String beanName) throws BeansException {
-
         // 1、Annotation('@XxlConf')：resolves conf + watch
         if (!beanName.equals(this.beanName)) {
-
             ReflectionUtils.doWithFields(bean.getClass(), new ReflectionUtils.FieldCallback() {
                 @Override
                 public void doWith(Field field) throws IllegalArgumentException,
@@ -81,7 +79,6 @@ public class XxlConfFactory extends InstantiationAwareBeanPostProcessorAdapter i
                     if (field.isAnnotationPresent(XxlConf.class)) {
                         String propertyName = field.getName();
                         XxlConf xxlConf = field.getAnnotation(XxlConf.class);
-
                         String confKey = xxlConf.value();
                         String confValue = XxlConfClient.get(confKey, xxlConf.defaultValue());
 
@@ -94,12 +91,10 @@ public class XxlConfFactory extends InstantiationAwareBeanPostProcessorAdapter i
                         if (xxlConf.callback()) {
                             BeanRefreshXxlConfListener.addBeanField(confKey, beanField);
                         }
-
                     }
                 }
             });
         }
-
         return super.postProcessAfterInstantiation(bean, beanName);
     }
 
@@ -107,26 +102,20 @@ public class XxlConfFactory extends InstantiationAwareBeanPostProcessorAdapter i
     public PropertyValues postProcessPropertyValues(PropertyValues pvs, PropertyDescriptor[] pds,
                                                     Object bean,
                                                     String beanName) throws BeansException {
-
         // 2、XML('$XxlConf{...}')：resolves placeholders + watch
         if (!beanName.equals(this.beanName)) {
-
             PropertyValue[] pvArray = pvs.getPropertyValues();
             for (PropertyValue pv : pvArray) {
                 if (pv.getValue() instanceof TypedStringValue) {
                     String propertyName = pv.getName();
                     String typeStringVal = ((TypedStringValue) pv.getValue()).getValue();
                     if (xmlKeyValid(typeStringVal)) {
-
                         // object + property
                         String confKey = xmlKeyParse(typeStringVal);
                         String confValue = XxlConfClient.get(confKey, "");
-
                         // resolves placeholders
                         BeanRefreshXxlConfListener.BeanField beanField = new BeanRefreshXxlConfListener.BeanField(
                             beanName, propertyName);
-                        //refreshBeanField(beanField, confValue, bean);
-
                         Class propClass = String.class;
                         for (PropertyDescriptor item : pds) {
                             if (beanField.getProperty().equals(item.getName())) {
@@ -135,14 +124,11 @@ public class XxlConfFactory extends InstantiationAwareBeanPostProcessorAdapter i
                         }
                         Object valueObj = FieldReflectionUtil.parseValue(propClass, confValue);
                         pv.setConvertedValue(valueObj);
-
                         // watch
                         BeanRefreshXxlConfListener.addBeanField(confKey, beanField);
-
                     }
                 }
             }
-
         }
 
         return super.postProcessPropertyValues(pvs, pds, bean, beanName);
