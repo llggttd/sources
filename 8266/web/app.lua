@@ -18,11 +18,26 @@ function led_light(on)
 end
 
 function config_wifi()
+	mode = wifi.setmode(wifi.STATION, true)
+	print("wifi mode " .. mode)
+
 	cfg = {}
 	cfg.ssid = "OZONE"
 	cfg.pwd = "9338447550"
 	cfg.auto = true
-	cfg.save = true
+    cfg.save = true
+    cfg.connected_cb = function(ssid, bssid, channel)
+        print("wifi connected to " .. ssid)
+    end
+    cfg.disconnected_cb = function(ssid, bssid, channel)
+        print("wifi disconnected")
+    end
+    cfg.got_ip_cb = function(ip, netmask, gateway)
+        print(ip)
+    end
+    cfg.dhcp_timeout_cb = function()
+        print("timeout")
+    end
 	wifi.sta.config(cfg)
 end
 
@@ -66,7 +81,7 @@ function start_web()
 	server:listen(80)
 end
 
-led_light(false)
+led_light(true)
 
 config_wifi()
 
@@ -79,7 +94,7 @@ start =
 		ip = wifi.sta.getip()
 		if ip ~= nil then
 			print("wifi connect, ip =" .. ip)
-			print("led status " .. led_status())
+			led_light(false)
 			start_web()
 			timer:unregister()
 		end

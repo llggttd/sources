@@ -1,5 +1,5 @@
 {
-    "baudrate": "115200",
+    "baudrate": "460800",
     "port": "COM3",
     "minify": false,
     "compile": false,
