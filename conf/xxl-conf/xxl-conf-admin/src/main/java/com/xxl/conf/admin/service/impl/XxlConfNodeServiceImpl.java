@@ -392,16 +392,6 @@ public class XxlConfNodeServiceImpl implements IXxlConfNodeService, Initializing
 			deferredResult.setResult(new ReturnT<>(ReturnT.FAIL.getCode(), "keys Invalid."));
 			return deferredResult;
 		}
-		/*for (String key: keys) {
-			if (key==null || key.trim().length()<4 || key.trim().length()>100) {
-				deferredResult.setResult(new ReturnT<>(ReturnT.FAIL.getCode(), "Key Invalid[4~100]"));
-				return deferredResult;
-			}
-			if (!RegexUtil.matches(RegexUtil.abc_number_line_point_pattern, key)) {
-				deferredResult.setResult(new ReturnT<>(ReturnT.FAIL.getCode(), "Key format Invalid"));
-				return deferredResult;
-			}
-		}*/
 
 		// monitor by client
 		for (String key: keys) {
