@@ -93,7 +93,7 @@ layui.use(['admin', 'form', 'user'], function(){
     ,elemPhone: '#LAY-user-login-cellphone'
     ,elemVercode: '#LAY-user-login-vercode'
     ,ajax: {
-      url: './json/user/sms.js' //实际使用请改成服务端真实接口
+      url: './json/user/sms.json' //实际使用请改成服务端真实接口
     }
   });
 
@@ -103,7 +103,7 @@ layui.use(['admin', 'form', 'user'], function(){
 
     //请求接口
     admin.req({
-      url: './json/user/forget.js' //实际使用请改成服务端真实接口
+      url: './json/user/forget.json' //实际使用请改成服务端真实接口
       ,data: field
       ,done: function(res){        
         location.hash = router.href + '/type=resetpass';
@@ -124,7 +124,7 @@ layui.use(['admin', 'form', 'user'], function(){
 
     //请求接口
     admin.req({
-      url: './json/user/resetpass.js' //实际使用请改成服务端真实接口
+      url: './json/user/resetpass.json' //实际使用请改成服务端真实接口
       ,data: field
       ,done: function(res){        
         layer.msg('密码已成功重置', {

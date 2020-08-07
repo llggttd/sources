@@ -81,7 +81,7 @@
 
   </div>
 
-  <script src="../../layuiadmin/layui/layui.js"></script>  
+  <script src="../../layuiadmin/layui/layui.json"></script>  
   <script>
   layui.config({
     base: '../../layuiadmin/' //静态资源所在路径
@@ -112,7 +112,7 @@
       
       //请求接口
       admin.req({
-        url: layui.setter.base + 'json/user/reg.js' //实际使用请改成服务端真实接口
+        url: layui.setter.base + 'json/user/reg.json' //实际使用请改成服务端真实接口
         ,data: field
         ,done: function(res){        
           layer.msg('注册成功', {

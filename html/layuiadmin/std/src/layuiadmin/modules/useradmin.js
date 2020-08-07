@@ -16,7 +16,7 @@ layui.define(['table', 'form'], function(exports){
   //用户管理
   table.render({
     elem: '#LAY-user-manage'
-    ,url: layui.setter.base + 'json/useradmin/webuser.js' //模拟接口
+    ,url: layui.setter.base + 'json/useradmin/webuser.json' //模拟接口
     ,cols: [[
       {type: 'checkbox', fixed: 'left'}
       ,{field: 'id', width: 100, title: 'ID', sort: true}
@@ -87,7 +87,7 @@ layui.define(['table', 'form'], function(exports){
   //管理员管理
   table.render({
     elem: '#LAY-user-back-manage'
-    ,url: layui.setter.base + 'json/useradmin/mangadmin.js' //模拟接口
+    ,url: layui.setter.base + 'json/useradmin/mangadmin.json' //模拟接口
     ,cols: [[
       {type: 'checkbox', fixed: 'left'}
       ,{field: 'id', width: 80, title: 'ID', sort: true}
@@ -153,7 +153,7 @@ layui.define(['table', 'form'], function(exports){
   //角色管理
   table.render({
     elem: '#LAY-user-back-role'
-    ,url: layui.setter.base + 'json/useradmin/role.js' //模拟接口
+    ,url: layui.setter.base + 'json/useradmin/role.json' //模拟接口
     ,cols: [[
       {type: 'checkbox', fixed: 'left'}
       ,{field: 'id', width: 80, title: 'ID', sort: true}

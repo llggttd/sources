@@ -33,12 +33,12 @@ layui.define(['index', 'layim'], function(exports){
   layim.config({
     //初始化接口
     init: {
-      url: layui.setter.base + 'json/layim/getList.js'
+      url: layui.setter.base + 'json/layim/getList.json'
       ,data: {}
     }
     //查看群员接口
     ,members: {
-      url: layui.setter.base + 'json/layim/getMembers.js'
+      url: layui.setter.base + 'json/layim/getMembers.json'
       ,data: {}
     }
     

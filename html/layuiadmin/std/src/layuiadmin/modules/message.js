@@ -40,7 +40,7 @@ layui.define(['admin', 'table', 'util'], function(exports){
   //全部消息
   table.render({
     elem: '#LAY-app-message-all'
-    ,url: layui.setter.base + 'json/message/all.js' //模拟接口
+    ,url: layui.setter.base + 'json/message/all.json' //模拟接口
     ,page: true
     ,cols: [[
       {type: 'checkbox', fixed: 'left'}
@@ -53,7 +53,7 @@ layui.define(['admin', 'table', 'util'], function(exports){
   //通知
   table.render({
     elem: '#LAY-app-message-notice'
-    ,url: layui.setter.base + 'json/message/notice.js' //模拟接口
+    ,url: layui.setter.base + 'json/message/notice.json' //模拟接口
     ,page: true
     ,cols: [[
       {type: 'checkbox', fixed: 'left'}
@@ -66,7 +66,7 @@ layui.define(['admin', 'table', 'util'], function(exports){
   //私信
   table.render({
     elem: '#LAY-app-message-direct'
-    ,url: layui.setter.base + 'json/message/direct.js' //模拟接口
+    ,url: layui.setter.base + 'json/message/direct.json' //模拟接口
     ,page: true
     ,cols: [[
       {type: 'checkbox', fixed: 'left'}

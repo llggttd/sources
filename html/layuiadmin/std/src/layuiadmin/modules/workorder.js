@@ -16,7 +16,7 @@ layui.define(['table', 'form', 'element'], function(exports){
 
   table.render({
     elem: '#LAY-app-system-order'
-    ,url: layui.setter.base + 'json/workorder/demo.js' //模拟接口
+    ,url: layui.setter.base + 'json/workorder/demo.json' //模拟接口
     ,cols: [[
       {type: 'numbers', fixed: 'left'}
       ,{field: 'orderid', width: 100, title: '工单号', sort: true}
