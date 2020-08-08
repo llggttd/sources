@@ -30,8 +30,8 @@ SECTION: Mandatory options
 All options in other sections are optional 
 -->
 
-  <id>OpenRestry</id>
-  <name>OpenRestry Lua Web Server</name>
+  <id>Nginx</id>
+  <name>Nginx</name>
   <description>OpenResty是一个基于NGINX的可伸缩的Web平台，Web开发人员可以使用Lua脚本语言调动Nginx支持的各种C以及Lua模块，更主要的是在性能方面，OpenResty可以快速构造出足以胜任10K以上并发连接响应的超高性能Web应用系统。</description>
   <executable>%BASE%\nginx.exe</executable>
 
