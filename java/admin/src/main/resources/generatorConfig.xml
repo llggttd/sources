@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE generatorConfiguration
+        PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN"
+        "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd">
+
+<generatorConfiguration>
+
+    <classPathEntry location="D:\\sqlite-jdbc-3.31.1.jar"/>
+
+
+    <context id="SQLite" targetRuntime="MyBatis3DynamicSql">
+        <!-- 生成的Java文件的编码 -->
+        <property name="javaFileEncoding" value="UTF-8"/>
+        <!-- 格式化java代码 -->
+        <property name="javaFormatter" value="org.mybatis.generator.api.dom.DefaultJavaFormatter"/>
+        <!-- 格式化XML代码 -->
+        <property name="xmlFormatter" value="org.mybatis.generator.api.dom.DefaultXmlFormatter"/>
+        <jdbcConnection driverClass="org.sqlite.JDBC"
+                        connectionURL="jdbc:sqlite:D:\\sqlite.db">
+        </jdbcConnection>
+
+        <javaTypeResolver>
+            <property name="forceBigDecimals" value="false"/>
+        </javaTypeResolver>
+
+        <javaModelGenerator targetPackage="com.example.admin.model" targetProject="src/main/java">
+
+        </javaModelGenerator>
+
+        <javaClientGenerator targetPackage="com.example.admin.mapper" targetProject="src/main/java">
+        </javaClientGenerator>
+
+        <table tableName="config"></table>
+        <table tableName="resource"></table>
+        <table tableName="role"></table>
+        <table tableName="role_resource"></table>
+        <table tableName="user"></table>
+        <table tableName="user_role"></table>
+
+    </context>
+</generatorConfiguration>

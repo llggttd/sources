@@ -16,7 +16,7 @@ layui.define(['laytpl', 'layer', 'element', 'util'], function(exports){
     ,engine: '.html' //视图文件后缀名
     ,pageTabs: false //是否开启页面选项卡功能。单页版不推荐开启
     
-    ,name: 'layuiAdmin Pro'
+    ,name: '管理系统'
     ,tableName: 'layuiAdmin' //本地存储表名
     ,MOD_NAME: 'admin' //模块事件名
     
@@ -31,12 +31,12 @@ layui.define(['laytpl', 'layer', 'element', 'util'], function(exports){
     
     //自定义响应字段
     ,response: {
-      statusName: 'status' //数据状态的字段名称
+      statusName: 'code' //数据状态的字段名称
       ,statusCode: {
         ok: 0 //数据状态一切正常的状态码
         ,logout: 1001 //登录状态失效的状态码
       }
-      ,msgName: 'message' //状态信息的字段名称
+      ,msgName: 'msg' //状态信息的字段名称
       ,dataName: 'data' //数据详情的字段名称
     }
     
