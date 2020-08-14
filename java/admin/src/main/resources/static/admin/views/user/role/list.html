@@ -11,19 +11,21 @@
 <div class="layui-fluid">
     <div class="layui-card">
         <div class="layui-card-body">
-            <div style="padding-bottom: 10px;">
-                <button class="layui-btn layuiadmin-btn-role" data-type="add">添加</button>
-            </div>
-            <table id="user-role-list" lay-filter="user-role-list-filter"></table>
-            <script type="text/html" id="tool-user-role-admin">
-                <a class="layui-btn layui-btn-normal layui-btn-xs" lay-event="edit"><i
-                        class="layui-icon layui-icon-edit"></i>编辑</a>
+            <script type="text/html" id="table-role-header-tpl">
+                <div class="layui-btn-container">
+                    <button class="layui-btn layui-btn-sm" lay-event="add">添加</button>
+                </div>
+            </script>
+            <table id="table-role-list" lay-filter="table-role-list-filter"></table>
+            <script type="text/html" id="table-role-list-tool">
+                <a class="layui-btn layui-btn-normal layui-btn-xs" lay-event="edit">
+                    <i class="layui-icon layui-icon-edit"></i>编辑</a>
                 {{#  if(d.enable == true){ }}
-                <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="disable"><i
-                        class="layui-icon layui-icon-delete"></i>禁用</a>
+                <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="disable">
+                    <i class="layui-icon layui-icon-delete"></i>禁用</a>
                 {{#  } else { }}
-                <a class="layui-btn layui-btn-success layui-btn-xs" lay-event="enable"><i
-                        class="layui-icon layui-icon-add-1"></i>启用</a>
+                <a class="layui-btn layui-btn-success layui-btn-xs" lay-event="enable">
+                    <i class="layui-icon layui-icon-add-1"></i>启用</a>
                 {{#  } }}
             </script>
         </div>
@@ -31,14 +33,7 @@
 </div>
 
 <script>
-    layui.use(['admin', 'role', 'table'], function () {
+    layui.use('role', layui.factory('role')).use(['admin', 'table', 'role'], function () {
         let $ = layui.$
-        let role = layui.role
-
-
-        $('.layui-btn.layuiadmin-btn-role').on('click', function () {
-            let type = $(this).data('type');
-            role.event[type] ? role.event[type].call(this) : '';
-        });
     });
 </script>

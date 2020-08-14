@@ -17,7 +17,7 @@ layui.define(['laytpl', 'layer', 'element', 'util'], function(exports){
     ,pageTabs: false //是否开启页面选项卡功能。单页版不推荐开启
     
     ,name: '管理系统'
-    ,tableName: 'layuiAdmin' //本地存储表名
+    ,tableName: 'admin' //本地存储表名
     ,MOD_NAME: 'admin' //模块事件名
     
     ,debug: true //是否开启调试模式。如开启，接口异常时会抛出异常 URL 等信息

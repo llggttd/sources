@@ -1,4 +1,9 @@
 layui.define(['table', 'form'], function (exports) {
+    let type = {
+        1: '菜单',
+        2: '图标',
+        3: '图片'
+    }
     let $ = layui.$
         , admin = layui.admin
         , view = layui.view
@@ -6,16 +11,25 @@ layui.define(['table', 'form'], function (exports) {
         , form = layui.form;
 
     table.render({
-        elem: '#table-role-list'
-        , url: './role/list'
-        , toolbar: '#table-role-header-tpl'
+        elem: '#table-resource-list'
+        , url: './resource/list'
+        , page: true
+        , toolbar: '#table-resource-header-tpl'
         , defaultToolbar: []
         , cols: [[
-            {field: 'roleId', width: 80, title: 'ID'}
-            , {field: 'roleName', title: '角色'}
-            , {field: 'roleSign', title: '标识'}
-            , {field: 'description', title: '描述'}
-            , {title: '操作', width: 150, align: 'center', fixed: 'right', toolbar: '#table-role-list-tool'}
+            {field: 'resourceId', width: 60, title: 'ID'}
+            , {field: 'resourceName', title: '名称'}
+            , {field: 'resourceSign', title: '标识'}
+            , {
+                field: 'resourceType', title: '类型', width: 80, templet: function (item) {
+                    return type[item.resourceType]
+                }
+            }
+            , {field: 'resourceIcon', title: '图标'}
+            , {field: 'resourceUri', title: '地址'}
+            , {field: 'resourceOrder', title: '顺序', width: 60}
+            , {field: 'parentId', title: '上级'}
+            , {title: '操作', width: 150, align: 'center', fixed: 'right', toolbar: '#table-resource-list-tool'}
         ]]
         , parseData: function (response) {
             return {
@@ -29,38 +43,37 @@ layui.define(['table', 'form'], function (exports) {
     });
 
     // 监听表格顶部工具条
-    table.on('toolbar(table-role-list-filter)', function (data) {
+    table.on('toolbar(table-resource-list-filter)', function (data) {
+        console.log(data)
         if (data.event === 'add') {
             event.add()
         }
     });
 
     //监听表格列工具条
-    table.on('tool(table-role-list-filter)', function (data) {
+    table.on('tool(table-resource-list-filter)', function (data) {
         console.log(data)
         if (data.event === 'edit') {
             event.edit(data)
-        } else if (data.event === 'disable') {
-            event.disable(data)
-        } else if (data.event === 'enable') {
-            event.enable(data)
+        } else if (data.event === 'del') {
+            event.del(data)
         }
     });
 
     let event = {
         add: function () {
             admin.popup({
-                title: '添加角色'
-                , area: ['500px', '480px']
-                , id: 'popup-user-role-add'
+                title: '添加资源'
+                , area: ['820px', '640px']
+                , id: 'popup-resource-add'
                 , success: function (layero, index) {
-                    view(this.id).render('user/role/add', {_popup: index}).done(function () {
-                        form.render(null, 'role-form');
+                    view(this.id).render('user/resource/add', {_popup: index}).done(function () {
+                        form.render(null, 'resource-form');
                     })
                 }
             });
         },
-        disable: function (data) {
+        del: function (data) {
             // 更新状态后，可在界面不刷新的情况下，更新修改的这一行，table模块提供了update方法，但不支持通过tool生成的列
             $.ajax({
                 type: 'post'
@@ -70,23 +83,7 @@ layui.define(['table', 'form'], function (exports) {
                 }
                 , dataType: 'json'
                 , success: function (response) {
-                    table.reload('table-role-list');
-                }
-                , error: function (error, code) {
-
-                }
-            })
-        },
-        enable: function (data) {
-            $.ajax({
-                type: 'post'
-                , url: '/role/enable'
-                , data: {
-                    roleId: data.data.roleId
-                }
-                , dataType: 'json'
-                , success: function (response) {
-                    table.reload('table-role-list');
+                    table.reload('user-role-list');
                 }
                 , error: function (error, code) {
 
@@ -95,20 +92,20 @@ layui.define(['table', 'form'], function (exports) {
         },
         edit: function (data) {
             admin.popup({
-                title: '编辑角色'
-                , area: ['500px', '480px']
-                , id: 'popup-user-role-add'
+                title: '编辑资源'
+                , area: ['500px', '960px']
+                , id: 'popup-resource-edit'
                 , success: function (layero, index) {
-                    view(this.id).render('user/role/add', $.extend(data.data, {_popup: index})).done(function () {
-                        form.render(null, 'role-form');
+                    view(this.id).render('user/resource/add', $.extend(data.data, {_popup: index})).done(function () {
+                        form.render(null, 'resource-form');
                     })
                 }
             });
         },
         save: function (data, callback) {
-            let url = '/role/edit'
-            if (!data.roleId) {
-                url = '/role/add'
+            let url = '/resource/edit'
+            if (!data.resourceId) {
+                url = '/resource/add'
             }
             $.ajax({
                 type: 'post'
@@ -125,7 +122,8 @@ layui.define(['table', 'form'], function (exports) {
         }
     }
 
-    exports('role', {
+    exports('resource', {
+        type: type,
         event: event
     })
 });

@@ -4,6 +4,7 @@
  */
 package com.example.admin.controller;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.annotation.Resource;
@@ -16,6 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.example.admin.helper.HttpResult;
 import com.example.admin.model.User;
 import com.example.admin.service.UserService;
+import com.example.admin.vo.MenuItem;
 
 /**
  * @author Guotao.Liu
@@ -40,5 +42,12 @@ public class UserController extends BaseController {
     public HttpResult getUserList() {
         List<User> users = userService.getAllUser();
         return HttpResult.success(users);
+    }
+
+    @GetMapping("/menu")
+    @ResponseBody
+    public HttpResult getUserMenu() {
+        List<MenuItem> list = new ArrayList<>();
+        return HttpResult.success(list);
     }
 }

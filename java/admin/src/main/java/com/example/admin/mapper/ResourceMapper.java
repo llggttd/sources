@@ -31,6 +31,7 @@ import org.mybatis.dynamic.sql.update.UpdateModel;
 import org.mybatis.dynamic.sql.update.render.UpdateStatementProvider;
 import org.mybatis.dynamic.sql.util.SqlProviderAdapter;
 import org.mybatis.dynamic.sql.util.mybatis3.MyBatis3Utils;
+import org.springframework.stereotype.Component;
 
 @Mapper
 public interface ResourceMapper {

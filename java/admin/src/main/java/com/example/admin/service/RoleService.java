@@ -7,9 +7,12 @@ package com.example.admin.service;
 import java.util.Date;
 import java.util.List;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.example.admin.consts.Common;
+import com.example.admin.consts.StatusEnum;
 import com.example.admin.helper.DateUtils;
 import com.example.admin.mapper.RoleMapper;
 import com.example.admin.model.Role;
@@ -33,7 +36,11 @@ public class RoleService {
     }
 
     public Boolean addRole(Role role) {
-        role.setStatus(1);
+        if (role == null || StringUtils.isAnyBlank(role.getRoleName(), role.getRoleSign())) {
+            throw new RuntimeException(Common.DATA_IS_NULL);
+        }
+        role.setDescription(StringUtils.defaultString(role.getDescription()));
+        role.setStatus(StatusEnum.ENABLE.getStatus());
         String now = DateUtils.formatDate(new Date());
         role.setTimeCreated(now);
         role.setTimeUpdated(now);
@@ -41,6 +48,9 @@ public class RoleService {
     }
 
     public Boolean updateRole(Role role) {
+        if (role == null || role.getId() == null) {
+            throw new RuntimeException(Common.DATA_IS_NULL);
+        }
         role.setTimeUpdated(DateUtils.formatDate(new Date()));
         return roleMapper.updateByPrimaryKeySelective(role) > 0;
     }

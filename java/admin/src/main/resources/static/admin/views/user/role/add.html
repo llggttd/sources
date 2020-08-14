@@ -1,4 +1,4 @@
-<div class="layui-form" lay-filter="user-role-form" style="padding: 20px 30px 0 0;">
+<div class="layui-form" lay-filter="role-form" style="padding: 20px 30px 0 0;">
     <div class="layui-form-item">
         <div class="layui-input-block">
             <script type="text/html" template>
@@ -36,7 +36,7 @@
     <div class="layui-form-item">
         <label class="layui-form-label"></label>
         <div class="layui-input-inline">
-            <input type="button" lay-submit lay-filter="user-role-submit" value="确认" class="layui-btn">
+            <input type="button" lay-submit lay-filter="role-form-submit" value="确认" class="layui-btn">
         </div>
     </div>
 
@@ -55,14 +55,14 @@
         let form = layui.form;
         let layer = layui.layer;
         let role = layui.role;
-        form.render(null, 'user-role-form');
+        form.render(null, 'role-form');
 
         //监听提交
-        form.on('submit(user-role-submit)', function (data) {
+        form.on('submit(role-form-submit)', function (data) {
             //获取提交的字段
             let field = data.field;
             role.event['save'](field, function () {
-                layui.table.reload('user-role-list');
+                layui.table.reload('table-role-list');
                 layer.close(field['popup']);
             })
         });
