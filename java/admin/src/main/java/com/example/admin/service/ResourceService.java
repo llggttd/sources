@@ -62,6 +62,13 @@ public class ResourceService {
         return resourceMapper.updateByPrimaryKeySelective(resource) > 0;
     }
 
+    public Resource getResource(Integer resourceId) {
+        if (resourceId == null) {
+            throw new RuntimeException(Common.DATA_IS_NULL);
+        }
+        return resourceMapper.selectByPrimaryKey(resourceId).orElse(null);
+    }
+
     public List<Resource> getAllResource(Integer page, Integer size) {
         page = page == null || page < 1 ? 1 : page;
         size = size == null ? 20 : size;

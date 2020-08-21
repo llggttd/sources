@@ -28,7 +28,7 @@ layui.define(['table', 'form'], function (exports) {
             , {field: 'resourceIcon', title: '图标'}
             , {field: 'resourceUri', title: '地址'}
             , {field: 'resourceOrder', title: '顺序', width: 60}
-            , {field: 'parentId', title: '上级'}
+            , {field: 'parentName', title: '上级'}
             , {title: '操作', width: 150, align: 'center', fixed: 'right', toolbar: '#table-resource-list-tool'}
         ]]
         , parseData: function (response) {
@@ -64,7 +64,7 @@ layui.define(['table', 'form'], function (exports) {
         add: function () {
             admin.popup({
                 title: '添加资源'
-                , area: ['820px', '640px']
+                , area: ['820px', '580px']
                 , id: 'popup-resource-add'
                 , success: function (layero, index) {
                     view(this.id).render('user/resource/add', {_popup: index}).done(function () {
@@ -93,7 +93,7 @@ layui.define(['table', 'form'], function (exports) {
         edit: function (data) {
             admin.popup({
                 title: '编辑资源'
-                , area: ['500px', '960px']
+                , area: ['820px', '580px']
                 , id: 'popup-resource-edit'
                 , success: function (layero, index) {
                     view(this.id).render('user/resource/add', $.extend(data.data, {_popup: index})).done(function () {
@@ -114,6 +114,26 @@ layui.define(['table', 'form'], function (exports) {
                 , dataType: 'json'
                 , success: function (response) {
                     callback()
+                }
+                , error: function (error, code) {
+
+                }
+            })
+        },
+        load: function (callback) {
+            $.ajax({
+                type: 'get'
+                , url: '/resource/tree'
+                , data: {}
+                , dataType: 'json'
+                , success: function (response) {
+                    console.log(response)
+                    let data = response.data
+                    data.unshift({
+                        id: 0,
+                        title: '无'
+                    })
+                    callback(data)
                 }
                 , error: function (error, code) {
 

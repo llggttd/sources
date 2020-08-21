@@ -1,6 +1,6 @@
 <div class="layui-fluid">
     <div class="layui-row layui-col-space10">
-        <div class="layui-col-md6 layui-form" lay-filter="resource-form"
+        <div class="layui-col-md7 layui-form" lay-filter="resource-form"
              style="padding: 20px 30px 0 0;">
             <div class="layui-form-item" style="display: none">
                 <div class="layui-input-block">
@@ -71,14 +71,24 @@
                     </script>
                 </div>
             </div>
-            <div class=" layui-form-item">
-                <label class="layui-form-label">上级</label>
+            <div class="layui-form-item" style="display: none">
                 <div class="layui-input-block">
                     <script type="text/html" template>
                         <input type="text" class="layui-input" name="parentId" value="{{ d.params.parentId || '0' }}"
                                lay-verify="required"/>
                     </script>
                 </div>
+            </div>
+            <div class=" layui-form-item">
+                <label class="layui-form-label">上级</label>
+                <div class="layui-input-inline" style="width: 100px;">
+                    <script type="text/html" template>
+                        <input type="text" class="layui-input" readonly name="parentName"
+                               value="{{ d.params.parentName || '无' }}"
+                               lay-verify="required"/>
+                    </script>
+                </div>
+                <div class="layui-form-mid layui-word-aux">在右侧点击选择上级</div>
             </div>
             <div class="layui-form-item">
                 <label class="layui-form-label"></label>
@@ -94,8 +104,8 @@
                 </div>
             </div>
         </div>
-        <div class="layui-col-md6" style="overflow:auto">
-            <div id="resource-tree"></div>
+        <div class="layui-col-md5" style="overflow:auto">
+            <div id="resource-tree" style="border: #029789 dotted 1px; min-height: 400px;border-radius: 8px;"></div>
         </div>
     </div>
 </div>
@@ -109,167 +119,23 @@
         let tree = layui.tree;
         form.render(null, 'resource-form');
 
-        data = [{
-            title: '一级1'
-            , id: 1
-            , field: 'name1'
-            , checked: true
-            , spread: true
-            , children: [{
-                title: '二级1-1 可允许跳转'
-                , id: 3
-                , field: 'name11'
-                , href: 'https://www.layui.com/'
-                , children: [{
-                    title: '三级1-1-3'
-                    , id: 23
-                    , field: ''
-                    , children: [{
-                        title: '四级1-1-3-1'
-                        , id: 24
-                        , field: ''
-                        , children: [{
-                            title: '五级1-1-3-1-1'
-                            , id: 30
-                            , field: ''
-                        }, {
-                            title: '五级1-1-3-1-2'
-                            , id: 31
-                            , field: ''
-                        }]
-                    }]
-                }, {
-                    title: '三级1-1-1'
-                    , id: 7
-                    , field: ''
-                    , children: [{
-                        title: '四级1-1-1-1 可允许跳转'
-                        , id: 15
-                        , field: ''
-                        , href: 'https://www.layui.com/doc/'
-                    }]
-                }, {
-                    title: '三级1-1-2'
-                    , id: 8
-                    , field: ''
-                    , children: [{
-                        title: '四级1-1-2-1'
-                        , id: 32
-                        , field: ''
-                    }]
-                }]
-            }, {
-                title: '二级1-2'
-                , id: 4
-                , spread: true
-                , children: [{
-                    title: '三级1-2-1'
-                    , id: 9
-                    , field: ''
-                    , disabled: true
-                }, {
-                    title: '三级1-2-2'
-                    , id: 10
-                    , field: ''
-                }]
-            }, {
-                title: '二级1-3'
-                , id: 20
-                , field: ''
-                , children: [{
-                    title: '三级1-3-1'
-                    , id: 21
-                    , field: ''
-                }, {
-                    title: '三级1-3-2'
-                    , id: 22
-                    , field: ''
-                }]
-            }]
-        }, {
-            title: '一级2'
-            , id: 2
-            , field: ''
-            , spread: true
-            , children: [{
-                title: '二级2-1'
-                , id: 5
-                , field: ''
-                , spread: true
-                , children: [{
-                    title: '三级2-1-1'
-                    , id: 11
-                    , field: ''
-                }, {
-                    title: '三级2-1-2'
-                    , id: 12
-                    , field: ''
-                }]
-            }, {
-                title: '二级2-2'
-                , id: 6
-                , field: ''
-                , children: [{
-                    title: '三级2-2-1'
-                    , id: 13
-                    , field: ''
-                }, {
-                    title: '三级2-2-2'
-                    , id: 14
-                    , field: ''
-                    , disabled: true
-                }]
-            }]
-        }, {
-            title: '一级3'
-            , id: 16
-            , field: ''
-            , children: [{
-                title: '二级3-1'
-                , id: 17
-                , field: ''
-                , fixed: true
-                , children: [{
-                    title: '三级3-1-1'
-                    , id: 18
-                    , field: ''
-                }, {
-                    title: '三级3-1-2'
-                    , id: 19
-                    , field: ''
-                }]
-            }, {
-                title: '二级3-2'
-                , id: 27
-                , field: ''
-                , children: [{
-                    title: '三级3-2-1'
-                    , id: 28
-                    , field: ''
-                }, {
-                    title: '三级3-2-2'
-                    , id: 29
-                    , field: ''
-                }]
-            }]
-        }]
-
-        //基本演示
-        tree.render({
-            elem: '#resource-tree'
-            , data: data
-            , showCheckbox: false
-            ,onlyIconControl: true
-            , id: 'resource-tree-demo'
-            , isJump: false
-            , click: function (obj) {
-                console.log(/click/, obj)
-            }
-            , oncheck: function (obj) {
-                console.log(/checked/, obj)
-                tree.setChecked('resource-tree-demo', obj.data.id);
-            }
-        });
+        //加载资源树
+        resource.event['load'](function (data) {
+            tree.render({
+                elem: '#resource-tree'
+                , data: data
+                , showCheckbox: false
+                , onlyIconControl: true
+                , id: 'resource-tree'
+                , isJump: false
+                , accordion: true
+                , click: function (obj) {
+                    console.log(/click/, obj)
+                    $('input[name=\'parentId\']').val(obj.data.id)
+                    $('input[name=\'parentName\']').val(obj.data.title)
+                }
+            });
+        })
 
         //监听提交
         form.on('submit(resource-form-submit)', function (data) {

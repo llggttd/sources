@@ -9,15 +9,18 @@ import java.util.List;
 
 import javax.annotation.Resource;
 
+import org.springframework.beans.BeanUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.example.admin.biz.UserBizService;
+import com.example.admin.dto.UserDTO;
 import com.example.admin.helper.HttpResult;
-import com.example.admin.model.User;
-import com.example.admin.service.UserService;
+import com.example.admin.vo.BooleanResult;
 import com.example.admin.vo.MenuItem;
+import com.example.admin.vo.UserVO;
 
 /**
  * @author Guotao.Liu
@@ -28,20 +31,52 @@ import com.example.admin.vo.MenuItem;
 public class UserController extends BaseController {
 
     @Resource
-    private UserService userService;
+    private UserBizService userBizService;
 
-    @GetMapping("/info")
+    @GetMapping("/add")
     @ResponseBody
-    public HttpResult getUserInfo(Integer userId) {
-        User user = userService.getUserById(userId);
-        return HttpResult.success(user);
+    public HttpResult addUser(UserVO userVO) {
+        UserDTO userDTO = new UserDTO();
+        BeanUtils.copyProperties(userVO, userDTO);
+        Boolean success = userBizService.addUser(userDTO);
+        BooleanResult result = new BooleanResult();
+        result.setSuccess(success);
+        return HttpResult.success(result);
+    }
+
+    @GetMapping("/edit")
+    @ResponseBody
+    public HttpResult editUser(UserVO userVO) {
+        UserDTO userDTO = new UserDTO();
+        BeanUtils.copyProperties(userVO, userDTO);
+        Boolean success = userBizService.updateUser(userDTO);
+        BooleanResult result = new BooleanResult();
+        result.setSuccess(success);
+        return HttpResult.success(result);
+    }
+
+    @GetMapping("/del")
+    @ResponseBody
+    public HttpResult delUser(Integer userId) {
+        UserDTO userDTO = new UserDTO();
+        userDTO.setId(userId);
+        Boolean success = userBizService.updateUser(userDTO);
+        BooleanResult result = new BooleanResult();
+        result.setSuccess(success);
+        return HttpResult.success(result);
     }
 
     @GetMapping("/list")
     @ResponseBody
-    public HttpResult getUserList() {
-        List<User> users = userService.getAllUser();
-        return HttpResult.success(users);
+    public HttpResult getUserList(Integer page, Integer limit) {
+        List<UserDTO> list = userBizService.getUserList(page, limit);
+        List<UserVO> result = new ArrayList<>();
+        list.forEach(item -> {
+            UserVO userVO = new UserVO();
+            BeanUtils.copyProperties(item, userVO);
+            result.add(userVO);
+        });
+        return HttpResult.success(result);
     }
 
     @GetMapping("/menu")
