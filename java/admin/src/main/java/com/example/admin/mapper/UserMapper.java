@@ -31,8 +31,10 @@ import org.mybatis.dynamic.sql.update.UpdateModel;
 import org.mybatis.dynamic.sql.update.render.UpdateStatementProvider;
 import org.mybatis.dynamic.sql.util.SqlProviderAdapter;
 import org.mybatis.dynamic.sql.util.mybatis3.MyBatis3Utils;
+import org.springframework.stereotype.Component;
 
 @Mapper
+@Component
 public interface UserMapper {
     @Generated(value="org.mybatis.generator.api.MyBatisGenerator", date="2020-08-13T12:16:15.017+08:00", comments="Source Table: user")
     BasicColumn[] selectList = BasicColumn.columnList(id, username, password, mobile, status, timeCreated, timeUpdated);

@@ -16,7 +16,7 @@
         <!-- 格式化XML代码 -->
         <property name="xmlFormatter" value="org.mybatis.generator.api.dom.DefaultXmlFormatter"/>
         <jdbcConnection driverClass="org.sqlite.JDBC"
-                        connectionURL="jdbc:sqlite:D:\\sqlite.db">
+                        connectionURL="jdbc:sqlite:D:\\Temp\\sqlite.db">
         </jdbcConnection>
 
         <javaTypeResolver>
