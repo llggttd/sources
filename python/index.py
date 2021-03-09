@@ -1,4 +1,4 @@
-#!/usr/bin/python2
+#!/usr/bin/python
 # -*- coding: UTF-8 -*-
 
 import json
@@ -8,11 +8,10 @@ import time
 
 PATH = 'D:/Temp'
 if os.path.exists(PATH):
-    print 'file exist'
+    print('file exist')
     stat = os.stat(PATH)
-    print stat
+    print(stat)
     local = time.localtime(stat.st_ctime)
-    print time.strftime("%Y-%m-%d %H:%M:%S", local) 
+    print(time.strftime("%Y-%m-%d %H:%M:%S", local))
 else:
-    print 'file not exist'
-
+    print('file not exist')

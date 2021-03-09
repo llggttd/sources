@@ -20,9 +20,9 @@ def get_file_ctime(path):
     return None
 
 TOMCAT = '/usr/local/tomcat/webapps/ROOT'
-print ''
-print '本机地址:       %s'%(get_ip_address('eth0'))
+print('')
+print('本机地址:       %s'%(get_ip_address('eth0')))
 tomcat_deploy_time = get_file_ctime(TOMCAT)
 if tomcat_deploy_time:    
-    print 'Tomcat发布时间: %s'%(tomcat_deploy_time)
-print ''
+    print(Tomcat发布时间: %s'%(tomcat_deploy_time))
+print('')
