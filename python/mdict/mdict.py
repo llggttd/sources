@@ -3,6 +3,7 @@ from io import FileIO
 import struct
 import zlib
 import util
+import os
 
 DEFAULT_ENCODING = "UTF-8"
 
@@ -198,5 +199,6 @@ def load(filename):
         print(kid.getData())
 
 # DATA_FILE = 'D:\\mdict\\example_output\\basic.mdx'
+
 DATA_FILE = 'D:\\mdict\\牛津高阶8简体.mdx'
 load(DATA_FILE)
