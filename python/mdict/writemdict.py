@@ -29,8 +29,8 @@ from __future__ import unicode_literals
 
 import struct, zlib, operator, sys, datetime
 
+from html import escape
 from ripemd128 import ripemd128
-from cgi import escape
 from pureSalsa20 import Salsa20
 
 try:

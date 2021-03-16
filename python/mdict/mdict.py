@@ -4,6 +4,7 @@ import struct
 import zlib
 import util
 import os
+from xml.dom.minidom import parseString
 
 DEFAULT_ENCODING = "UTF-8"
 
@@ -30,18 +31,14 @@ class FileHeaderDataDefine(DataDefine):
         super().__init__()
 
     def read(self, file: FileIO):
-        self._contentLength = struct.unpack('>L', file.read(4))[0]
-        headerContent = file.read(self._contentLength)
+        length = struct.unpack('>L', file.read(4))[0]
+        header = file.read(length)
         adler32 = struct.unpack('<L', file.read(4))[0]
-        assert(adler32 == zlib.adler32(headerContent) & 0xffffffff)
-        self._content = headerContent[:-
-                                      6].decode('utf-16').encode(DEFAULT_ENCODING)
+        assert(adler32 == zlib.adler32(header) & 0xffffffff)
+        self._data = header[:-6].decode('utf-16').encode(self._encoding)
 
     def getData(self):
-        return [self._contentLength, self._content]
-
-    def getHeader(self):
-        return self._content
+        return self._data
 
 
 class KeywardHeaderDataDefine(DataDefine):
@@ -76,14 +73,16 @@ class KeywardHeaderDataDefine(DataDefine):
 
 class KeywardIndexDataDefine(DataDefine):
 
-    def __init__(self, length):
+    def __init__(self, length, encrypt):
         super().__init__()
         self._length = length
+        self._encrypt = encrypt
 
     def read(self, file: FileIO):
         keywardIndexData = file.read(self._length)
-        keywardBlockInfo = zlib.decompress(
-            util._mdx_decrypt(keywardIndexData)[8:])
+        if self._encrypt & 0x02:
+            keywardIndexData = util._mdx_decrypt(keywardIndexData)
+        keywardBlockInfo = zlib.decompress(keywardIndexData[8:])
         adler32 = struct.unpack('>I', keywardIndexData[4:8])[0]
         assert(adler32 == zlib.adler32(keywardBlockInfo) & 0xffffffff)
 
@@ -100,14 +99,16 @@ class KeywardIndexDataDefine(DataDefine):
             firstKeyLength = struct.unpack(
                 byte_format, keywardBlockInfo[i:i+byte_width])[0]
             i += byte_width
-            
-            firstKey = keywardBlockInfo[i:i+firstKeyLength].encode(DEFAULT_ENCODING)
+
+            firstKey = str(
+                keywardBlockInfo[i:i+firstKeyLength], encoding=DEFAULT_ENCODING)
             i += firstKeyLength + text_term
 
-            lastKeyLength = struct.unpack(byte_format, keywardBlockInfo[i:i+byte_width])[0]
+            lastKeyLength = struct.unpack(
+                byte_format, keywardBlockInfo[i:i+byte_width])[0]
             i += byte_width
-            lastKey = keywardBlockInfo[i:i +
-                                       lastKeyLength].encode(DEFAULT_ENCODING)
+            lastKey = str(
+                keywardBlockInfo[i:i + lastKeyLength], encoding=DEFAULT_ENCODING)
             i += lastKeyLength + text_term
 
             compKeyBlocksSize = struct.unpack(
@@ -119,8 +120,10 @@ class KeywardIndexDataDefine(DataDefine):
             i += BYTE_LENGTH_NUMBER
             keyIndex.append({
                 'entries_number': entriesNum,
-                'first_keyword': firstKey,
+                'first_keyward': firstKey,
+                'first_keyward_length': firstKeyLength,
                 'last_keyward': lastKey,
+                'last_keyward_length': lastKeyLength,
                 'compress_key_blocks_size': compKeyBlocksSize,
                 'decompress_key_blocks_size': deCompKeyBlocksSize
             })
@@ -137,68 +140,70 @@ class KeywardBlockDataDefine(DataDefine):
         self._length = length
 
     def read(self, file: FileIO):
-        keywardIndexData = file.read(self._length)
-        keywardBlockInfo = zlib.decompress(
-            util._mdx_decrypt(keywardIndexData)[8:])
-        adler32 = struct.unpack('>I', keywardIndexData[4:8])[0]
-        assert(adler32 == zlib.adler32(keywardBlockInfo) & 0xffffffff)
-
-        byte_format = '>H'
-        byte_width = 2
-        text_term = 1
-
-        i = 0
-        keyIndex = []
-        while i < len(keywardBlockInfo):
-            entriesNum = struct.unpack(
-                '>Q', keywardBlockInfo[i:i+BYTE_LENGTH_NUMBER])[0]
-            i += BYTE_LENGTH_NUMBER
-            firstKeyLength = struct.unpack(
-                byte_format, keywardBlockInfo[i:i+byte_width])[0]
-            i += byte_width
-            
-            firstKey = keywardBlockInfo[i:i+firstKeyLength]
-            i += firstKeyLength + text_term
-
-            lastKeyLength = struct.unpack(byte_format, keywardBlockInfo[i:i+byte_width])[0]
-            i += byte_width
-            lastKey = keywardBlockInfo[i:i+lastKeyLength]
-            i += lastKeyLength + text_term
-
-            compKeyBlocksSize = struct.unpack(
-                '>Q', keywardBlockInfo[i:i+BYTE_LENGTH_NUMBER])[0]
-            i += BYTE_LENGTH_NUMBER
-
-            deCompKeyBlocksSize = struct.unpack(
-                '>Q', keywardBlockInfo[i:i+BYTE_LENGTH_NUMBER])[0]
-            i += BYTE_LENGTH_NUMBER
-            keyIndex.append({
-                'entries_number': entriesNum,
-                'first_keyword': firstKey,
-                'last_keyward': lastKey,
-                'compress_key_blocks_size': compKeyBlocksSize,
-                'decompress_key_blocks_size': deCompKeyBlocksSize
-            })
-            self._data = keyIndex
+        keywardBlockData = zlib.decompress(file.read(self._length)[8:])
+        key_list = []
+        key_start_index = 0
+        while key_start_index < len(keywardBlockData):
+            # the corresponding record's offset in record block
+            key_id = struct.unpack(
+                '>Q', keywardBlockData[key_start_index:key_start_index+BYTE_LENGTH_NUMBER])[0]
+            delimiter = b'\x00'
+            width = 1
+            i = key_start_index + BYTE_LENGTH_NUMBER
+            while i < len(keywardBlockData):
+                if keywardBlockData[i:i+width] == delimiter:
+                    key_end_index = i
+                    break
+                i += width
+            key_text = str(
+                keywardBlockData[key_start_index+BYTE_LENGTH_NUMBER:key_end_index], encoding=DEFAULT_ENCODING).strip()
+            key_start_index = key_end_index + width
+            key_list += [(key_id, key_text)]
+        self._data = key_list
 
     def getData(self):
         return self._data
 
-def load(filename):
-    with open(filename, 'rb') as file:
-        hdf = FileHeaderDataDefine()
-        hdf.read(file)
-        print(hdf.getData())
 
-        kdf = KeywardHeaderDataDefine()
-        kdf.read(file)
-        print(kdf.getData())
+class Mdict:
+    def __init__(self, filepath):
+        self._filepath = filepath
+        self.__parse()
 
-        kid = KeywardIndexDataDefine(kdf.getIndexCompLength())
-        kid.read(file)
-        print(kid.getData())
+    def getHeader(self, key=None):
+        element = parseString(self._fileheader).documentElement
+        if key is None:
+            return element.attributes.items()
+        return element.getAttribute(key)
 
-# DATA_FILE = 'D:\\mdict\\example_output\\basic.mdx'
+    def __parse(self):
+        with open(self._filepath, 'rb') as file:
+            hdf = FileHeaderDataDefine()
+            hdf.read(file)
+            self._fileheader = hdf.getData()
+            self._encrypt = int(self.getHeader('Encrypted'))
+            kdf = KeywardHeaderDataDefine()
+            kdf.read(file)
+            self._entriesNum = kdf.getEntriesNum()
+            self._blocksNum = kdf.getBlocksNum()
 
-DATA_FILE = 'D:\\mdict\\牛津高阶8简体.mdx'
-load(DATA_FILE)
+            kid = KeywardIndexDataDefine(kdf.getIndexCompLength(), self._encrypt)
+            kid.read(file)
+            self._keywardIndex = kid.getData()
+
+            for i in range(self._blocksNum):
+                kbd = KeywardBlockDataDefine(
+                    self._keywardIndex[i]['compress_key_blocks_size'])
+                kbd.read(file)
+                print(kbd.getData())
+
+    def getFileInfo(self):
+        pass
+
+
+BASE_PATH = os.path.dirname(__file__)
+# DATA_FILE = os.path.join(BASE_PATH, '牛津高阶8简体.mdx')
+DATA_FILE = os.path.join(BASE_PATH, 'example_output/basic.mdx')
+
+mdict = Mdict(DATA_FILE)
+# print(mdict.getHeader())
