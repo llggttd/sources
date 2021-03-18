@@ -165,6 +165,32 @@ class KeywardBlockDataDefine(DataDefine):
         return self._data
 
 
+class RecordIndexDataDefine(DataDefine):
+
+    def __init__(self, length):
+        super().__init__()
+        self._length = length
+
+    def read(self, file: FileIO):
+        pass
+
+    def getData(self):
+        return self._data
+
+
+class RecordBlockDataDefine(DataDefine):
+
+    def __init__(self, length):
+        super().__init__()
+        self._length = length
+
+    def read(self, file: FileIO):
+        pass
+
+    def getData(self):
+        return self._data
+
+
 class Mdict:
     def __init__(self, filepath):
         self._filepath = filepath
